@@ -34,11 +34,14 @@ public class UDP_Server {
             udpSocket.receive(packet);
             msg = new String(packet.getData()).trim();
 
-            System.out.println(
-                    "Message from " + packet.getAddress().getHostAddress() + ": " + msg);
+            displayMessage(msg,packet.getAddress().getHostAddress());
         }
 
+
     }
+    public void displayMessage(String msg,String Host){
+            System.out.println("Message from " + Host + ": " + msg);
+        }
 
     public void setRunning(boolean running) {
         this.running = running;

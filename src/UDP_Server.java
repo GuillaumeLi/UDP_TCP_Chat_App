@@ -1,16 +1,24 @@
+import javax.swing.text.DefaultTextUI;
 import java.io.IOException;
 import java.net.*;
 
 public class UDP_Server {
 
+    private static int DEFAULT_PORT = 8000;
+
     private int port;
     private DatagramSocket udpSocket;
-
     private boolean running;
+
+    public static void main (String[] args) throws IOException {
+        UDP_Server udp_server = new UDP_Server();
+        udp_server.launch();
+        /** With the command "nc -u localhost 8000" in a other terminal, we can connect to the server as client.**/
+    }
 
     // Default constructor
     public UDP_Server() throws SocketException {
-        this(8000);
+        this(DEFAULT_PORT);
     }
 
     public UDP_Server(int port) throws SocketException {
@@ -23,7 +31,6 @@ public class UDP_Server {
         String msg;
 
         running = true;
-        toString();
 
         while (running) {
 
@@ -39,14 +46,20 @@ public class UDP_Server {
 
 
     }
-    public void displayMessage(String msg,String Host){
-            System.out.println("Message from " + Host + ": " + msg);
+    public void displayMessage(String msg,String host){
+            System.out.println("Message from " + host + " : " + msg);
         }
 
+    /**
+     * @param running
+     */
     public void setRunning(boolean running) {
         this.running = running;
     }
 
+    /**
+     * @return
+     */
     public boolean isRunning() {
         return running;
     }

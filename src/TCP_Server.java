@@ -1,8 +1,5 @@
-import java.io.IOException;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.SocketException;
+import java.io.*;
+import java.net.*;
 
 public class TCP_Server {
 
@@ -10,8 +7,19 @@ public class TCP_Server {
 
     private int port;
     private ServerSocket tcpSocket;
-    private boolean running;
+    private Socket socket;
+    private InputStream input;
+    private BufferedReader reader;
+    private OutputStream answer;
+    private PrintWriter writer;
+    private boolean running = true;
 
+    public static void main (String[] args) throws IOException {
+        TCP_Server tcp_server = new TCP_Server();
+        tcp_server.launch();
+        /** With the command "ncat -t localhost 8010" in a other terminal, we can connect to the server as client.**/
+        /** -t stands for TCP **/
+    }
 
     // Default constructor
     public TCP_Server() throws IOException {
@@ -23,9 +31,31 @@ public class TCP_Server {
         tcpSocket = new ServerSocket(this.port);
     }
 
-    public void launch () {
-        System.out.println("-- Running Server at " + InetAddress.getLocalHost() + "--");
+    public void launch () throws IOException {
+        System.out.println("-- Running TCP Server at " + InetAddress.getLocalHost() + "--");
+        while (running) {
+            socket = tcpSocket.accept();
+            readMessage();
+            serverResponse();
+            socket.close();
+        }
     }
 
+    public void displayMessage(String msg, InetAddress client){
+        System.out.println("Message received from " + client + " : " + msg);
+    }
+
+    public void readMessage() throws IOException {
+        input = socket.getInputStream();
+        reader = new BufferedReader(new InputStreamReader(input));
+        String message = reader.readLine();
+        displayMessage(message, socket.getInetAddress());
+    }
+
+    public void serverResponse() throws IOException {
+        answer = socket.getOutputStream();
+        writer = new PrintWriter(answer,true);
+        writer.println("Message received by the server");
+    }
 
 }

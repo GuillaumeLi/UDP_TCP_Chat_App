@@ -13,7 +13,8 @@ public class UDP_Server {
     public static void main (String[] args) throws IOException {
         UDP_Server udp_server = new UDP_Server();
         udp_server.launch();
-        /** With the command "nc -u localhost 8000" in a other terminal, we can connect to the server as client.**/
+        /** With the command "ncat -u localhost 8000" in a other terminal, we can connect to the server as client.**/
+        /** -u stands for UDP **/
     }
 
     // Default constructor
@@ -27,7 +28,7 @@ public class UDP_Server {
     }
 
     public void launch() throws IOException {
-        System.out.println("-- Running Server at " + InetAddress.getLocalHost() + "--");
+        System.out.println("-- Running UDP Server at " + InetAddress.getLocalHost() + "--");
         String msg;
 
         running = true;
